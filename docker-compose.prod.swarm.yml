@@ -1,0 +1,25 @@
+version: '3'
+services:
+  nginx:
+    ports:
+      - "80:80"
+    container_name: nginx-prod
+  node-app:
+    deploy:
+      replicas: 8
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 2
+        delay: 15s
+    build:
+      context: ./node
+      args: 
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
+    command: node index.js
+    #container_name: node-app-prod

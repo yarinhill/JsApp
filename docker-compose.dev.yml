@@ -1,0 +1,21 @@
+version: '3'
+services:
+  nginx:
+    ports:
+      - "3000:80"
+    container_name: nginx-dev
+  node-app:
+    build:
+      context: ./node
+      args: 
+        NODE_ENV: development
+    environment:
+      - NODE_ENV=development
+      - MONGO_UESR=${MONGO_USER}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
+    volumes:
+      - ./node/:/app
+      - /app/node_modules
+    command: npm run dev
+    #container_name: node-app-dev

@@ -1,0 +1,18 @@
+version: '3'
+services:
+  nginx:
+    ports:
+      - "80:80"
+    container_name: nginx-prod
+  node-app:
+    build:
+      context: ./node
+      args: 
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
+    command: node index.js
+    #container_name: node-app-prod
